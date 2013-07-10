@@ -1,4 +1,5 @@
 class ProductsController < ApplicationController
+	before_filter :ensure_logged_in, :only => [:show]
   def index
   	@products = Product.all
 
@@ -9,13 +10,17 @@ class ProductsController < ApplicationController
   end
 
   def show
-  	@product = Product.find(params[:id])
+  @product = Product.find(params[:id])
 
-  	respond_to do |format|
-  		format.html #show.html.erb
-  		format.json { render json: @product }
-  	end
+  if current_user
+    @review = @product.reviews.build
   end
+
+  respond_to do |format|
+    format.html # show.html.erb
+    format.json { render json: @product }
+  end
+end
 
    def new
   	@product = Product.new
