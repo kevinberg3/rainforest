@@ -1,5 +1,8 @@
 class Product < ActiveRecord::Base
-  attr_accessible :description, :name, :price_in_cents
+	attr_accessible :description, :name, :price_in_cents
+
+	has_many :reviews
+	has_many :users :through => :reviews
 
   validates :description :name, :presence => true
   validates :price_in_cents, :numerically => {:only_integer => true}
